@@ -15,10 +15,10 @@ router.post('/',createUser);
 //Login de usuario
 router.post('/login',loginUser);
 
-//Modificar los datos de un usuario
-router.put('/:id',);
+//Modificar usuario
+router.put('/:id',updateUser);
 
-//Eliminar un usuario
-router.delete('/:id',);
+//Eliminar usuario
+router.delete('/:id',deleteUser);
 
 export default router;

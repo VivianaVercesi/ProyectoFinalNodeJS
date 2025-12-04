@@ -1,7 +1,9 @@
 import express from "express";
-import { connectDB } from "./config/database.js";
 import dotenv from "dotenv";
+dotenv.config();  
+import { connectDB } from "./config/database.js";
 import userRoutes from "./routes/userRoutes.js";
+import productRoutes from "./routes/productRoutes.js";
 import cors from "cors";
 
 
@@ -16,7 +18,7 @@ app.use(express.json());
 // Conexión a MongoDB
 connectDB();
 
-//app.use(['/users','/usuarios'],userRoutes);
+app.use(['/users','/usuarios'],userRoutes);
 app.use(['/products','/productos'],productRoutes);
 
 app.use((req,res) => {
