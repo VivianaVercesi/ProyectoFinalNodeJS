@@ -16,7 +16,7 @@ app.use(express.json());
 // Conexión a MongoDB
 connectDB();
 
-app.use(['/users','/usuarios'],userRoutes);
+//app.use(['/users','/usuarios'],userRoutes);
 app.use(['/products','/productos'],productRoutes);
 
 app.use((req,res) => {
