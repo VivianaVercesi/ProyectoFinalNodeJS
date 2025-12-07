@@ -1,5 +1,6 @@
 import User from "../models/userModel.js";
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 
 //Obtener todos los usuarios
 export const getAllUsers = async (params) => {
@@ -13,17 +14,18 @@ export const getUserById = async (id) => {
 
 //Crear usuario
 export const createUser = async (userData) => {
-    const {email, password, name} = userData
+    const {email, password, name, role} = userData
     
     const userExist = await User.findOne({email});
     if (userExist) throw new Error("Email ya registrado");
     
     const hashedPassword = await bcrypt.hash(password,10);
     
-    const newUser = newUser({
+    const newUser = new User({
         email,
         name,
-        password: hashedPassword
+        password: hashedPassword,
+        role: role || "user" 
     })
     return await newUser.save();
 }
@@ -36,11 +38,24 @@ export const loginUser = async (email, password) => {
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) throw new Error("Contraseña incorrecta");
 
-    return user;
+     // Crear token
+    const token = jwt.sign(
+        {
+            id: user._id,
+            email: user.email,
+            role: user.role
+        },
+        process.env.JWT_SECRET,
+        { expiresIn: process.env.JWT_EXPIRES }
+    );
+    return {token, user};
 }
 
 //Actualizar usuario
 export const updateUser = async (id,userData) => {
+    if (data.password) {
+        data.password = await bcrypt.hash(data.password, 10);
+    }
     return await User.findByIdAndUpdate(id,userData, {new: true});
 }
 

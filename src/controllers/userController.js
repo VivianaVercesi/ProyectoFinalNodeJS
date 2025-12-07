@@ -1,4 +1,5 @@
 import * as userService from "../services/userService.js";
+
 //Obtener todos los usuarios
 export const getAllUsers = async (req,res) => {
     try {
@@ -39,8 +40,8 @@ export const createUser = async (req,res) => {
 export const loginUser = async (req,res) => {
     try {
         const {email, password} = req.body;
-        const user = await userService.loginUser(email, password);
-        res.status(200).json({msg:"Login exitoso", user});
+        const { token, user } = await userService.loginUser(email, password);
+        res.status(200).json({msg:"Login exitoso",token,user});
     } catch (error) {
         res.status(401).json({msg:"Error en login", error: error.message});
     }

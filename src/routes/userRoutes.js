@@ -1,13 +1,15 @@
 import { Router } from "express";
 import {getAllUsers, getUserById, createUser, loginUser, updateUser, deleteUser} from "../controllers/userController.js";
+import { verifyToken, isAdmin } from "../middlewares/auth.js";
+
 
 const router = Router();
 
 //Obtener todos los usuarios
-router.get('/',getAllUsers);
+router.get('/',verifyToken, isAdmin, getAllUsers);
 
 //Obtener usuario por id
-router.get('/:id',getUserById);
+router.get('/:id',verifyToken, isAdmin, getUserById);
 
 //Crear un nuevo usuario
 router.post('/',createUser);
@@ -16,9 +18,9 @@ router.post('/',createUser);
 router.post('/login',loginUser);
 
 //Modificar usuario
-router.put('/:id',updateUser);
+router.put('/:id',verifyToken, isAdmin, updateUser);
 
 //Eliminar usuario
-router.delete('/:id',deleteUser);
+router.delete('/:id',verifyToken, isAdmin, deleteUser);
 
 export default router;
